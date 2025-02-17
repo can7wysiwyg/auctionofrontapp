@@ -19,10 +19,20 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.can1996.auctiono"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "owner": "can1996",
+    "extra": {
+      "eas": {
+        "projectId": "a818cd21-3fe1-49b6-8233-fe9abb0d6fec"
+      }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }
