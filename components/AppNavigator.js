@@ -4,8 +4,17 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native'
 import { Ionicons } from "@expo/vector-icons"
+import { useDispatch, useSelector } from 'react-redux';
 import Home from './public/Home';
 import Login from './auth/Login';
+import Register from './auth/Register'
+import VerifyEmail from './auth/VerifyEmail';
+import Logout from './auth/Logout';
+import ForgotPassword from './auth/ForgotPassword';
+import ResetPassword from './auth/ResetPassword';
+
+
+
 
 const Stack = createStackNavigator()
 const Tab = createBottomTabNavigator();
@@ -29,7 +38,7 @@ const AuthTab = React.memo(() => {
   return (
     <Stack.Navigator>
       <Stack.Screen 
-        name="Auth" 
+        name="login" 
         component={Login}
         options={({ navigation }) => ({
           headerShown: true,
@@ -44,11 +53,94 @@ const AuthTab = React.memo(() => {
           )
         })} 
       />
+
+
+<Stack.Screen 
+        name="register" 
+        component={Register}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Register",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
+
+<Stack.Screen 
+        name="ForgotPassword" 
+        component={ForgotPassword}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Recover Password",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
+
+<Stack.Screen 
+        name="ResetPassword" 
+        component={ResetPassword}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Reset Password",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
+
+
+
+
+<Stack.Screen 
+        name="VerifyEmail" 
+        component={VerifyEmail}
+        options={{
+          headerShown: false,
+          headerTitle: "Verify Email"
+        }} 
+      />
+
+
+
+<Stack.Screen 
+        name="Home" 
+        component={Home}
+        options={{
+          headerShown: false,
+          headerTitle: "Home"
+        }} 
+      />
+
+
+
+
     </Stack.Navigator>
   )
 })
 
 export default function AppNavigator() {
+  const { token, user, loading } = useSelector((state) => state.auth);
   const navigationRef = React.useRef(null)
 
   return (
@@ -71,15 +163,33 @@ export default function AppNavigator() {
           }}
         />
 
-        <Tab.Screen
-          name='Authenti'
-          component={AuthTab}
-          options={{
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="key" size={size} color={color} />
-            )
-          }}
-        />
+
+        {
+          token ? (
+            <Tab.Screen
+              name="LOGOUT"
+              component={Logout}
+              options={{
+                tabBarIcon: ({ color, size }) => (
+                  <Ionicons name="log-out-outline" size={size} color={color} />
+                ),
+              }}
+            />
+          ) : (
+
+            <Tab.Screen
+            name='Log In'
+            component={AuthTab}
+            options={{
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="key" size={size} color={color} />
+              )
+            }}
+          />
+          )
+        }
+
+        
       </Tab.Navigator>
     </NavigationContainer>
   )
