@@ -12,6 +12,8 @@ import VerifyEmail from './auth/VerifyEmail';
 import Logout from './auth/Logout';
 import ForgotPassword from './auth/ForgotPassword';
 import ResetPassword from './auth/ResetPassword';
+import Profile from './user/profile/Profile';
+import Settings from './user/core/Settings';
 
 
 
@@ -139,8 +141,58 @@ const AuthTab = React.memo(() => {
   )
 })
 
+
+const UserTab = React.memo(() => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen 
+        name="Profile" 
+        component={Profile}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Profile",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
+
+<Stack.Screen 
+        name="Settings" 
+        component={Settings}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Settings",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
+
+
+
+</Stack.Navigator>
+      )
+
+
+
+
+})
+
 export default function AppNavigator() {
-  const { token, user, loading } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
   const navigationRef = React.useRef(null)
 
   return (
@@ -162,6 +214,24 @@ export default function AppNavigator() {
             )
           }}
         />
+
+
+        {
+          token && (
+ <Tab.Screen 
+ name="profile"
+ component={UserTab}
+
+ options={{ 
+  tabBarIcon: ({color, size}) => (
+    <Ionicons name="person" size={size} color={color} />
+  )
+ }}
+ 
+ />
+
+          )
+        }
 
 
         {
