@@ -14,6 +14,7 @@ import ForgotPassword from './auth/ForgotPassword';
 import ResetPassword from './auth/ResetPassword';
 import Profile from './user/profile/Profile';
 import Settings from './user/core/Settings';
+import ProductDetail from './public/products/ProductDetail';
 
 
 
@@ -32,6 +33,29 @@ const HomeTab = React.memo(() => {
           headerTitle: "Home"
         }} 
       />
+
+
+<Stack.Screen 
+        name="ProductDetail" 
+        component={ProductDetail}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Product",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
+
+
+
+
     </Stack.Navigator>
   )
 })

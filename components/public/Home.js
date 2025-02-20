@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import {
   View,
   Text,
@@ -12,27 +12,20 @@ import {
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ProductsAll } from '../../helpers/misc/Products';
+import { CategoriesAll } from '../../helpers/misc/Categories';
+
 
 const { width } = Dimensions.get('window');
 const CARD_WIDTH = (width - 45) / 2; // 45 = padding (15) * 2 + gap between cards (15)
 
-export default function Home() {
+export default function Home({navigation}) {
   const [products, setProducts] = useState([]);
+  const[categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState('All');
   
-  const categories = [
-    'All',
-    'Art',
-    'Collectibles',
-    'Jewelry',
-    'Antiques',
-    'Fashion',
-    'Electronics',
-    'Cars',
-  ];
-
+  
   const fetchProducts = async () => {
     setLoading(true);
     try {
@@ -41,53 +34,112 @@ export default function Home() {
         setProducts(data.products);
       }
     } catch (error) {
-      console.error('Error fetching products:', error);
+      console.log('Error fetching products:', error);
     }
     setLoading(false);
   };
 
+
+  const filteredProducts = useMemo(() => {
+    if (selectedCategory === 'All') {
+      return products;
+    }
+    return products.filter(product => product.productCat === selectedCategory);
+  }, [selectedCategory, products]);
+
+
+
+  const fetchCategories = async () => {
+    setLoading(true)
+    try {
+
+      const data = await CategoriesAll()
+
+      if(data) {
+        setCategories(data)
+      }
+      
+    } catch (error) {
+      console.log('Error fetching categories:', error)
+      
+    }
+    setLoading(false)
+  }
+
+
   useEffect(() => {
     fetchProducts();
+    fetchCategories()
   }, []);
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     fetchProducts().then(() => setRefreshing(false));
+    fetchCategories().then(() => setRefreshing(false))
   }, []);
 
   const formatPrice = (price) => {
     return price.toLocaleString('en-US', {
       style: 'currency',
-      currency: 'USD',
+      currency: 'MWK',
       maximumFractionDigits: 0,
     });
   };
 
-  const renderCategoryItem = ({ item }) => (
+  
+
+
+const renderCategoryItem = ({ item }) => {
+  // Special case for "All" category
+  if (item === 'All') {
+    return (
+      <TouchableOpacity
+        style={[
+          styles.categoryItem,
+          selectedCategory === 'All' && styles.categoryItemSelected,
+        ]}
+        onPress={() => setSelectedCategory('All')}
+      >
+        <Text
+          style={[
+            styles.categoryText,
+            selectedCategory === 'All' && styles.categoryTextSelected,
+          ]}
+        >
+          All
+        </Text>
+      </TouchableOpacity>
+    );
+  }
+  return (
     <TouchableOpacity
       style={[
         styles.categoryItem,
-        selectedCategory === item && styles.categoryItemSelected,
+        selectedCategory === item._id && styles.categoryItemSelected,
       ]}
-      onPress={() => setSelectedCategory(item)}
+      onPress={() => setSelectedCategory(item._id)}
     >
       <Text
         style={[
           styles.categoryText,
-          selectedCategory === item && styles.categoryTextSelected,
+          selectedCategory === item._id && styles.categoryTextSelected,
         ]}
       >
-        {item}
+        {item.catName}
       </Text>
     </TouchableOpacity>
   );
+
+}
+
+
 
   const renderProductItem = ({ item }) => (
     <TouchableOpacity 
       style={styles.productCard}
       onPress={() => {
-        // Navigate to product detail
-        // navigation.navigate('ProductDetail', { productId: item._id });
+        
+        navigation.navigate('ProductDetail', { productId: item._id });
       }}
     >
       <Image
@@ -120,38 +172,45 @@ export default function Home() {
     <View style={styles.container}>
       {/* Categories Section */}
       <View style={styles.categoriesContainer}>
-        <FlatList
+       
+
+<FlatList
           horizontal
-          data={categories}
+          data={['All', ...categories]} // Add 'All' to the categories
           renderItem={renderCategoryItem}
-          keyExtractor={(item) => item}
+          keyExtractor={(item) => item === 'All' ? 'all' : item._id}
           showsHorizontalScrollIndicator={false}
           style={styles.categoriesList}
         />
+
+
       </View>
 
       {/* Products Grid */}
       
+
+
 <FlatList
-  key={`grid-${selectedCategory}`}  // Add this line to force re-render when category changes
-  data={products}
-  renderItem={renderProductItem}
-  keyExtractor={(item) => item._id}
-  numColumns={2}
-  showsVerticalScrollIndicator={false}
-  contentContainerStyle={styles.productsList}
-  columnWrapperStyle={styles.productRow}
-  refreshControl={
-    <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-  }
-  ListEmptyComponent={
-    !loading && (
-      <View style={styles.emptyContainer}>
-        <Text style={styles.emptyText}>No products found</Text>
-      </View>
-    )
-  }
-/>
+        key={`grid-${selectedCategory}`}
+        data={filteredProducts} // Use filtered products instead of all products
+        renderItem={renderProductItem}
+        keyExtractor={(item) => item._id}
+        numColumns={2}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.productsList}
+        columnWrapperStyle={styles.productRow}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        ListEmptyComponent={
+          !loading && (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>No products found</Text>
+            </View>
+          )
+        }
+      />
+
     </View>
   );
 }
