@@ -15,6 +15,7 @@ import ResetPassword from './auth/ResetPassword';
 import Profile from './user/profile/Profile';
 import Settings from './user/core/Settings';
 import ProductDetail from './public/products/ProductDetail';
+import EditProfile from './user/core/EditProfile';
 
 
 
@@ -203,6 +204,25 @@ const UserTab = React.memo(() => {
           )
         })} 
       />
+
+
+<Stack.Screen 
+        name="EditProfile" 
+        component={EditProfile}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Update Account",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
 
 
 

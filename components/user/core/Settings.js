@@ -11,7 +11,7 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import { useSelector } from 'react-redux';
 
-export default function Settings() {
+export default function Settings({navigation}) {
   const { user } = useSelector((state) => state.auth);
   const [pushNotifications, setPushNotifications] = useState(true);
   const [emailNotifications, setEmailNotifications] = useState(true);
@@ -58,10 +58,11 @@ export default function Settings() {
       {/* Account Settings */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Account</Text>
-        {renderSettingsItem("person", "Edit Profile", null, () => {})}
-        {renderSettingsItem("lock", "Change Password", null, () => {})}
-        {renderSettingsItem("email", "Email Address", null, () => {})}
-        {renderSettingsItem("phone", "Phone Number", null, () => {})}
+        
+        {renderSettingsItem("person", "Edit Profile", null, () => {
+          navigation.navigate('EditProfile')
+        })}
+       
       </View>
 
       {/* Notifications */}
