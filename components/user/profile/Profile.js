@@ -8,6 +8,8 @@ export default function Profile({navigation}) {
     const { user } = useSelector((state) => state.auth);
     const [refreshing, setRefreshing] = useState(false);
 
+    console.log(user)
+
     const formatDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', { 
@@ -60,7 +62,7 @@ export default function Profile({navigation}) {
       <View style={styles.header}>
         <View style={styles.headerContent}>
           <Image
-            source={{ uri: 'https://via.placeholder.com/100' }}
+            source={{ uri: user?.picture || 'https://avatar.iran.liara.run/public/41' }}
             style={styles.avatar}
           />
           <Text style={styles.name}>{user?.name}</Text>
@@ -78,7 +80,7 @@ export default function Profile({navigation}) {
       <Text>  {renderStatsItem('emoji-events', 'Won Auctions',)} </Text>
       <Text>  {renderStatsItem('date-range', 'Member Since', formatDate(user?.createdAt))} </Text>
 
-      </View> *
+      </View> 
 
       {/* Actions Section */}
       <View style={styles.actionsContainer}>

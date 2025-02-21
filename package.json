@@ -30,6 +30,8 @@
     "axios": "^1.7.9",
     "expo": "~52.0.35",
     "expo-auth-session": "~6.0.3",
+    "expo-image-picker": "^16.0.6",
+    "expo-linear-gradient": "~14.0.2",
     "expo-random": "^14.0.1",
     "expo-secure-store": "~14.0.1",
     "expo-status-bar": "~2.0.1",
@@ -44,8 +46,7 @@
     "react-native-webview": "^13.12.5",
     "react-navigation": "^5.0.0",
     "react-redux": "^9.2.0",
-    "redux": "^5.0.1",
-    "expo-linear-gradient": "~14.0.2"
+    "redux": "^5.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

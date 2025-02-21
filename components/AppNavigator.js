@@ -16,6 +16,10 @@ import Profile from './user/profile/Profile';
 import Settings from './user/core/Settings';
 import ProductDetail from './public/products/ProductDetail';
 import EditProfile from './user/core/EditProfile';
+import UploadPicture from './user/core/pages/UploadPicture';
+import UpdateEmail from './user/core/pages/UpdateEmail';
+import UpdatePhone from './user/core/pages/UpdatePhone';
+import ChangeName from './user/core/pages/ChangeName';
 
 
 
@@ -222,6 +226,82 @@ const UserTab = React.memo(() => {
           )
         })} 
       />
+
+
+<Stack.Screen 
+        name="UploadPicture" 
+        component={UploadPicture}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Upload Picture",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
+
+<Stack.Screen 
+        name="UpdateEmail" 
+        component={UpdateEmail}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Update Email",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
+
+<Stack.Screen 
+        name="UpdatePhone" 
+        component={UpdatePhone}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Update Phone",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
+
+
+<Stack.Screen 
+        name="ChangeName" 
+        component={ChangeName}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Change Name",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
+
+
 
 
 
