@@ -134,31 +134,50 @@ const renderCategoryItem = ({ item }) => {
 
 
 
-  const renderProductItem = ({ item }) => (
-    <TouchableOpacity 
-      style={styles.productCard}
-      onPress={() => {
-        
-        navigation.navigate('ProductDetail', { productId: item._id });
-      }}
-    >
-      <Image
-        source={{ uri: item.images[0].url }}
-        style={styles.productImage}
-        resizeMode="cover"
-      />
-      <View style={styles.productInfo}>
-        <Text style={styles.productName} numberOfLines={1}>
-          {item.name}
-        </Text>
-        <Text style={styles.price}>{formatPrice(item.price)}</Text>
-        <View style={styles.timerContainer}>
-          <MaterialIcons name="timer" size={12} color="#666" />
-          <Text style={styles.timerText}>2d 15h</Text>
+
+  const renderProductItem = ({ item }) => {
+   
+    const currentDate = new Date();
+    const bidExpireDate = new Date(item.bidExpire);
+  
+    
+    const timeDifference = bidExpireDate - currentDate;
+  
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24)); 
+    const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); 
+    const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+  
+    
+    const timeString = `${days}d ${hours}h ${minutes}mnts`;
+  
+    return (
+      <TouchableOpacity 
+        style={styles.productCard}
+        onPress={() => {
+          navigation.navigate('ProductDetail', { productId: item._id });
+        }}
+      >
+        <Image
+          source={{ uri: item.images[0].url }}
+          style={styles.productImage}
+          resizeMode="cover"
+        />
+        <View style={styles.productInfo}>
+          <Text style={styles.productName} numberOfLines={1}>
+            {item.name}
+          </Text>
+          <Text style={styles.price}>{formatPrice(item.price)}</Text>
+          <View style={styles.timerContainer}>
+            <MaterialIcons name="timer" size={12} color="#666" />
+            <Text style={styles.timerText}> {timeString}</Text>
+          </View>
         </View>
-      </View>
-    </TouchableOpacity>
-  );
+      </TouchableOpacity>
+    );
+  };
+  
+
+
 
   if (loading && !refreshing) {
     return (
@@ -176,7 +195,7 @@ const renderCategoryItem = ({ item }) => {
 
 <FlatList
           horizontal
-          data={['All', ...categories]} // Add 'All' to the categories
+          data={['All', ...categories]} 
           renderItem={renderCategoryItem}
           keyExtractor={(item) => item === 'All' ? 'all' : item._id}
           showsHorizontalScrollIndicator={false}
@@ -192,7 +211,7 @@ const renderCategoryItem = ({ item }) => {
 
 <FlatList
         key={`grid-${selectedCategory}`}
-        data={filteredProducts} // Use filtered products instead of all products
+        data={filteredProducts} 
         renderItem={renderProductItem}
         keyExtractor={(item) => item._id}
         numColumns={2}

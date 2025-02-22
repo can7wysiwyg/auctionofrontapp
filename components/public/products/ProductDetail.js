@@ -13,10 +13,11 @@ import {
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import { ProductSingle } from '../../../helpers/misc/Products';
+import moment from "moment/moment"
 
 const { width } = Dimensions.get('window');
 
-export default function ProductDetail({ route }) {
+export default function ProductDetail({navigation, route }) {
   const { productId } = route.params;
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -111,7 +112,14 @@ export default function ProductDetail({ route }) {
         
         <View style={styles.timerContainer}>
           <MaterialIcons name="timer" size={20} color="#666" />
-          <Text style={styles.timerText}>2d 15h remaining</Text>
+          <Text style={styles.timerText}>{moment(product?.bidExpire).fromNow(true)} remaining</Text>
+        </View>
+
+        <View style={styles.timerContainer}>
+          <TouchableOpacity onPress={() => navigation.navigate('BidComp', {productId: product?._id})}>
+          <MaterialIcons name="visibility" size={20} color="#666" />
+          <Text style={styles.timerText}>See bids placed on this product</Text>
+          </TouchableOpacity>
         </View>
 
         <Text style={styles.sectionTitle}>Description</Text>

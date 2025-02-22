@@ -20,6 +20,7 @@ import UploadPicture from './user/core/pages/UploadPicture';
 import UpdateEmail from './user/core/pages/UpdateEmail';
 import UpdatePhone from './user/core/pages/UpdatePhone';
 import ChangeName from './user/core/pages/ChangeName';
+import BidComp from './public/products/bids/BidComp';
 
 
 
@@ -56,6 +57,25 @@ const HomeTab = React.memo(() => {
           )
         })} 
       />
+
+
+<Stack.Screen 
+        name="BidComp" 
+        component={BidComp}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "View Bids",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
 
 
 
