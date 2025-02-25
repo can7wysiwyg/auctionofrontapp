@@ -14,11 +14,14 @@ import {
 import { MaterialIcons } from '@expo/vector-icons';
 import { ProductSingle } from '../../../helpers/misc/Products';
 import moment from "moment/moment"
-
+import axios from 'axios';
+import { ApiUrl } from '../../../helpers/ApiUrl';
+import { useSelector } from 'react-redux';
 const { width } = Dimensions.get('window');
 
 export default function ProductDetail({navigation, route }) {
   const { productId } = route.params;
+  const { token } = useSelector((state) => state.auth);
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(true);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
@@ -44,11 +47,30 @@ export default function ProductDetail({navigation, route }) {
     });
   };
 
-  const handleBid = () => {
+  const handleBid = async() => {
     // Handle bid submission here
-    console.log('Bid submitted:', bidAmount);
+
+ try{
+
+  let item = {
+    productId,
+    bidAmount
+  }
+
+     const response = await axios.post(`${ApiUrl}/user/place_bid`, item, {
+      headers: {
+         Authorization: `Bearer ${token}`
+      }
+     })
+
+  console.log('Bid submitted:', response.data);
     setModalVisible(false);
     setBidAmount('');
+
+ } catch(error) {
+
+ }
+    
   };
 
   if (loading) {
