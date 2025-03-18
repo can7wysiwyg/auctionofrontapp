@@ -84,7 +84,7 @@ export default function Profile({navigation}) {
 
       {/* Actions Section */}
       <View style={styles.actionsContainer}>
-        <TouchableOpacity style={styles.actionButton}>
+        <TouchableOpacity style={styles.actionButton} onPress={() => navigation.navigate('ActiveBids')}>
           <Feather name="clock" size={24} color="#666" />
           <Text style={styles.actionText}>Active Bids</Text>
         </TouchableOpacity>

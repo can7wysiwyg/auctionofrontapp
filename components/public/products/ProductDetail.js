@@ -147,6 +147,8 @@ export default function ProductDetail({navigation, route }) {
         <Text style={styles.sectionTitle}>Description</Text>
         <Text style={styles.description}>{product.description}</Text>
 
+     {
+      token ?  (
         <TouchableOpacity
           style={styles.bidButton}
           onPress={() => setModalVisible(true)}
@@ -154,6 +156,20 @@ export default function ProductDetail({navigation, route }) {
           <MaterialIcons name="gavel" size={24} color="white" />
           <Text style={styles.bidButtonText}>Place Bid</Text>
         </TouchableOpacity>
+
+      ) :  (
+
+        <TouchableOpacity
+          style={styles.bidButton}
+      
+        >
+          <MaterialIcons name="gavel" size={24} color="white" />
+          <Text style={styles.bidButtonText}>Login To Place Bid</Text>
+        </TouchableOpacity>
+
+
+      )
+     }   
       </View>
 
       {/* Bid Modal */}

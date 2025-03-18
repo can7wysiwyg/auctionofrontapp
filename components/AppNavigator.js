@@ -4,7 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native'
 import { Ionicons } from "@expo/vector-icons"
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import Home from './public/Home';
 import Login from './auth/Login';
 import Register from './auth/Register'
@@ -21,6 +21,8 @@ import UpdateEmail from './user/core/pages/UpdateEmail';
 import UpdatePhone from './user/core/pages/UpdatePhone';
 import ChangeName from './user/core/pages/ChangeName';
 import BidComp from './public/products/bids/BidComp';
+import ActiveBids from './user/core/bids/ActiveBids';
+import BidDetails from './user/core/bids/BidDetails';
 
 
 
@@ -210,6 +212,46 @@ const UserTab = React.memo(() => {
           )
         })} 
       />
+
+
+<Stack.Screen 
+        name="ActiveBids" 
+        component={ActiveBids}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "My Bids",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
+
+
+<Stack.Screen 
+        name="BidDetails" 
+        component={BidDetails}
+        options={({ navigation }) => ({
+          headerShown: true,
+          headerTitle: "Bid Details",
+          headerLeft: () => (
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{ marginLeft: 10 }}
+            >
+              <Ionicons name="arrow-back" size={24} color="#000" />
+            </TouchableOpacity>
+          )
+        })} 
+      />
+
+
+
 
 
 <Stack.Screen 
